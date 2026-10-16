@@ -35,6 +35,10 @@ Perfil responsavel pela administracao dos cadastros e da disponibilidade dos rec
 | Consultar historico e relatorios | A validar |
 | Aprovar solicitacao de recurso restrito | Nao atribuido a este perfil pela especificacao atual |
 
+## Situacao atual da API
+
+O backend representa Administradores no cadastro e permite que um ID existente com `tipoAprovador: ADMINISTRADOR` aprove ou rejeite reserva solicitada. Isso nao autentica quem enviou o ID e nao constitui controle de acesso seguro. Ainda nao existem rotas administrativas para cadastrar usuarios/recursos, bloqueios ou periodos de manutencao; o servico apenas impede solicitacao quando o estado da sala nao e `DISPONIVEL`.
+
 ## Qualidade relevante - ISO/IEC 25010
 
 - **Seguranca:** restringir funcoes administrativas a usuarios autorizados e registrar alteracoes.

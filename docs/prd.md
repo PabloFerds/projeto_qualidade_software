@@ -30,6 +30,10 @@ O projeto e academico e ainda nao existe uma aplicacao para esse processo. A esp
 - Bloqueios, manutencao, retirada/devolucao de materiais e historico auditavel.
 - Relatorios de utilizacao, carga horaria alocada e conflitos evitados.
 
+## Situacao atual do backend
+
+O backend existente e um recorte inicial de reservas de salas, nao a implementacao completa deste escopo. Na solicitacao, valida se `tipoSolicitante` (`PROFESSOR`/`COORDENADOR`) corresponde ao cadastro; decisoes aceitam `RESPONSAVEL`/`ADMINISTRADOR` com ID existente e registram o decisor. Isso nao substitui autenticacao: IDs e papeis enviados pelo cliente ainda podem ser falsificados. A protecao concorrente usa bloqueio pessimista e ainda precisa de teste de integracao. Recursos restritos, conflitos de professor/material, auditoria, ciclo completo de estados, manutencao por periodo, movimentacao de materiais e operacoes administrativas continuam pendentes. Consulte a [matriz de implementacao dos requisitos](prd/requisitos-funcionais.md#situacao-da-implementacao-atual) e a [documentacao da API](api-reservas.md).
+
 ## Criterios academicos de sucesso
 
 - Nenhuma reserva conflitante aceita, inclusive em solicitacoes simultaneas.
@@ -52,6 +56,7 @@ Consulte [requisitos nao funcionais e evidencias ISO 25010](prd/requisitos-nao-f
 - [Requisitos funcionais e rastreabilidade](prd/requisitos-funcionais.md)
 - [Requisitos nao funcionais ISO 25010](prd/requisitos-nao-funcionais.md)
 - [Fluxos e diagramas de sequencia](prd/fluxos-sequencia.md)
+- [Documentacao da API de reservas e contrato OpenAPI](api-reservas.md)
 - Personas: [Administrador](prd/personas/admin-sistema.md), [Responsavel](prd/personas/responsavel.md) e [Solicitante](prd/personas/solicitante.md)
 
 ## Referencias
