@@ -1,0 +1,25 @@
+{
+  "storyId": "1.1",
+  "storyPath": "docs/stories/1.1.front-end-reserva-de-salas.story.md",
+  "verdict": "GO",
+  "score": "8/10",
+  "confidence": "Medium",
+  "statusTransition": "Draft -> Ready",
+  "criteria": {
+    "clearTitle": "pass",
+    "completeDescription": "pass",
+    "testableAcceptanceCriteria": "pass",
+    "wellDefinedScope": "partial: scope is explicit in the acceptance criteria and Dev Notes; no separate IN/OUT table",
+    "dependencies": "pass: no prior story dependency; first local story",
+    "complexityEstimate": "pass: Medium",
+    "businessValue": "pass",
+    "risks": "partial: frontend runtime and automated test setup are absent and documented",
+    "definitionOfDone": "pass: acceptance criteria and verification task define completion",
+    "sourceAlignment": "pass: requirements trace to user request, PRD and Java enums"
+  },
+  "findings": [
+    "No local epic, architecture guide or ClickUp integration exists; the story is derived from the user-approved scope and PRD and is scoped to frontend only.",
+    "No frontend build/test setup exists. Validation is limited to available static checks and browser interaction verification."
+  ],
+  "validatedAt": "2026-10-15"
+}

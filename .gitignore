@@ -1,47 +1,29 @@
-Compiled Java classes
+# Environment & Secrets (AIOX)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
 
-*.class
+# Dependencies (AIOX)
+node_modules/
+node_modules
 
-Logs
+# Build & Logs (AIOX)
+dist/
+build/
+logs/
 
-*.log logs/
+# IDE & OS (AIOX)
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
 
-BlueJ
-
-*.ctxt
-
-Java / JVM crash logs
-
-hserrpid* replay_pid*
-
-Build tools: Maven and Gradle
-
-target/ build/ .gradle/ out/
-
-Packaged artifacts
-
-.jar .war .nar .ear .zip .tar.gz *.rar
-
-Environment variables and secrets
-
-.env .env.* !.env.example !.env.template .key .pem application-local.properties application-local.yml application-local.yaml application-secret.properties application-secret.yml application-secret.yaml
-
-IDEs
-
-.idea/ .vscode/ .iml .swp .DS_Store Thumbs.db
-
-Frontend dependencies and builds, if applicable
-
-node_modules/ dist/
-
-Temporary files
-
-.mtj.tmp/
-
-AIOX local files
-
-.aiox-core/local/ .aiox/install-log.txt
-
-Claude local settings
-
+# AIOX Local (AIOX)
+.aiox-core/local/
 .claude/settings.local.json
+.aiox/install-log.txt
+
+.aiox-core/*
+.claude/*

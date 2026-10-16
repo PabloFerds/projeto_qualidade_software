@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073a63">
+  <meta name="description" content="Painel demonstrativo para consulta e gestão de reservas de salas.">
+  <title>Salas SENAC | Gestão de espaços</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/reservation-rules.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Salas SENAC, início">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-copy">
+          <strong>SENAC</strong>
+          <span>GESTÃO DE SALAS</span>
+        </span>
+      </a>
+
+      <div class="sidebar-section-label">ÁREA DE TRABALHO</div>
+      <nav class="primary-navigation" aria-label="Selecionar perfil">
+        <button class="nav-link is-active" type="button" data-profile="solicitante" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">01</span>
+          <span>Solicitante</span>
+        </button>
+        <button class="nav-link" type="button" data-profile="responsavel">
+          <span class="nav-icon" aria-hidden="true">02</span>
+          <span>Responsável</span>
+          <span class="nav-count" id="pending-count">0</span>
+        </button>
+        <button class="nav-link" type="button" data-profile="administrador">
+          <span class="nav-icon" aria-hidden="true">03</span>
+          <span>Administrador</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note">
+        <span class="note-indicator" aria-hidden="true"></span>
+        <div>
+          <strong>Ambiente demonstrativo</strong>
+          <span>Dados desta sessão não são persistidos.</span>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <span class="footer-mark" aria-hidden="true">S</span>
+        <span>Espaços para aprender.</span>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <div class="topbar-context">
+          <span class="eyebrow">PORTAL DE ESPAÇOS</span>
+          <span class="topbar-divider" aria-hidden="true">/</span>
+          <span id="active-profile-label">Solicitante</span>
+        </div>
+        <div class="topbar-meta">
+          <span class="demo-badge"><span aria-hidden="true"></span> Protótipo local</span>
+          <span class="topbar-date" id="today-label"></span>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div id="app-content"></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="modal" id="reservation-dialog" aria-labelledby="dialog-title">
+    <form id="reservation-form" class="modal-card">
+      <div class="modal-heading">
+        <div>
+          <span class="eyebrow">RESERVA DE SALA</span>
+          <h2 id="dialog-title">Nova solicitação</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog aria-label="Fechar janela">×</button>
+      </div>
+      <p class="modal-description" id="dialog-description"></p>
+      <input id="reservation-id" type="hidden">
+      <input id="reservation-room-id" type="hidden">
+      <div class="form-grid">
+        <label class="field">
+          <span>Data de início</span>
+          <input id="start-date" name="startDate" type="date" required>
+        </label>
+        <label class="field">
+          <span>Horário de início</span>
+          <input id="start-time" name="startTime" type="time" required>
+        </label>
+        <label class="field">
+          <span>Data de término</span>
+          <input id="end-date" name="endDate" type="date" required>
+        </label>
+        <label class="field">
+          <span>Horário de término</span>
+          <input id="end-time" name="endTime" type="time" required>
+        </label>
+      </div>
+      <p class="form-error" id="form-error" role="alert"></p>
+      <div class="modal-actions">
+        <button class="button button-quiet" type="button" data-close-dialog>Voltar</button>
+        <button class="button button-primary" id="reservation-submit" type="submit">Enviar solicitação</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
