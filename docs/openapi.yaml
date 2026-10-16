@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: API de Reservas de Salas
+  version: 1.0.0
+  description: >-
+    API para solicitar e acompanhar reservas de salas. Os papeis e identificadores
+    enviados sao comparados aos cadastros, mas nao comprovam a identidade de quem
+    chamou a API. As regras implementadas e suas limitacoes estao descritas em
+    api-reservas.md.
+servers:
+  - url: http://localhost:8080
+    description: Ambiente local
+tags:
+  - name: Reservas
+    description: Solicitacao, consulta e decisao de reservas
+paths:
+  /api/reservas:
+    post:
+      tags: [Reservas]
+      summary: Solicitar reserva de sala
+      operationId: solicitarReserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolicitarReservaRequest'
+      responses:
+        '201':
+          description: Reserva criada no estado SOLICITADA
+          headers:
+            Location:
+              description: URI da reserva criada
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+        '403':
+          $ref: '#/components/responses/AcessoNegado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+  /api/reservas/{reservaId}:
+    parameters:
+      - $ref: '#/components/parameters/ReservaId'
+    get:
+      tags: [Reservas]
+      summary: Consultar reserva
+      operationId: buscarReserva
+      responses:
+        '200':
+          description: Reserva encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+  /api/reservas/solicitante/{solicitanteId}:
+    parameters:
+      - name: solicitanteId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags: [Reservas]
+      summary: Listar reservas de um solicitante
+      operationId: listarReservasDoSolicitante
+      responses:
+        '200':
+          description: Reservas ordenadas por inicio, da mais recente para a mais antiga
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reserva'
+  /api/reservas/{reservaId}/horario:
+    parameters:
+      - $ref: '#/components/parameters/ReservaId'
+    put:
+      tags: [Reservas]
+      summary: Alterar horario de reserva solicitada
+      operationId: alterarHorarioReserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlterarHorarioRequest'
+      responses:
+        '200':
+          description: Horario atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+  /api/reservas/{reservaId}/cancelamento:
+    parameters:
+      - $ref: '#/components/parameters/ReservaId'
+    post:
+      tags: [Reservas]
+      summary: Cancelar reserva solicitada ou aprovada
+      operationId: cancelarReserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcaoReservaRequest'
+      responses:
+        '200':
+          description: Reserva cancelada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+  /api/reservas/{reservaId}/aprovacao:
+    parameters:
+      - $ref: '#/components/parameters/ReservaId'
+    post:
+      tags: [Reservas]
+      summary: Aprovar reserva solicitada
+      operationId: aprovarReserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisaoReservaRequest'
+      responses:
+        '200':
+          description: Reserva aprovada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+        '403':
+          $ref: '#/components/responses/AcessoNegado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+  /api/reservas/{reservaId}/rejeicao:
+    parameters:
+      - $ref: '#/components/parameters/ReservaId'
+    post:
+      tags: [Reservas]
+      summary: Rejeitar reserva solicitada
+      operationId: rejeitarReserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisaoReservaRequest'
+      responses:
+        '200':
+          description: Reserva rejeitada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          $ref: '#/components/responses/RecursoNaoEncontrado'
+        '403':
+          $ref: '#/components/responses/AcessoNegado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+components:
+  parameters:
+    ReservaId:
+      name: reservaId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+  responses:
+    RequisicaoInvalida:
+      description: Dados ausentes, malformados ou com intervalo invalido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    RecursoNaoEncontrado:
+      description: Reserva, sala, solicitante ou responsavel nao encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    AcessoNegado:
+      description: Cargo informado nao corresponde ao perfil cadastrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    Conflito:
+      description: Conflito de horario ou estado que impede a operacao
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+  schemas:
+    SolicitarReservaRequest:
+      type: object
+      required: [salaId, solicitanteId, tipoSolicitante, inicio, fim]
+      properties:
+        salaId:
+          type: integer
+          format: int64
+          minimum: 1
+        solicitanteId:
+          type: integer
+          format: int64
+          minimum: 1
+        tipoSolicitante:
+          type: string
+          enum: [PROFESSOR, COORDENADOR]
+        inicio:
+          type: string
+          format: date-time
+        fim:
+          type: string
+          format: date-time
+    AlterarHorarioRequest:
+      type: object
+      required: [solicitanteId, inicio, fim]
+      properties:
+        solicitanteId:
+          type: integer
+          format: int64
+          minimum: 1
+        inicio:
+          type: string
+          format: date-time
+        fim:
+          type: string
+          format: date-time
+    AcaoReservaRequest:
+      type: object
+      required: [usuarioId]
+      properties:
+        usuarioId:
+          type: integer
+          format: int64
+          minimum: 1
+          description: ID do solicitante que esta cancelando a propria reserva
+    DecisaoReservaRequest:
+      type: object
+      required: [usuarioId, tipoAprovador]
+      properties:
+        usuarioId:
+          type: integer
+          format: int64
+          minimum: 1
+          description: ID cadastrado do Responsavel ou Administrador
+        tipoAprovador:
+          type: string
+          enum: [RESPONSAVEL, ADMINISTRADOR]
+    Reserva:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        salaId:
+          type: integer
+          format: int64
+        solicitanteId:
+          type: integer
+          format: int64
+        responsavelId:
+          type: integer
+          format: int64
+          nullable: true
+        administradorId:
+          type: integer
+          format: int64
+          nullable: true
+        inicio:
+          type: string
+          format: date-time
+        fim:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - SOLICITADA
+            - APROVADA
+            - EM_USO
+            - CONCLUIDA
+            - REJEITADA
+            - CANCELADA
+            - NAO_COMPARECEU
+        solicitadoEm:
+          type: string
+          format: date-time
+          nullable: true
+        aprovadoEm:
+          type: string
+          format: date-time
+          nullable: true
+    Erro:
+      type: object
+      required: [mensagem]
+      properties:
+        mensagem:
+          type: string

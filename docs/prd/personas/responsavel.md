@@ -36,6 +36,10 @@ Perfil que aprova solicitacoes especiais, valida a alocacao de docentes e acompa
 | Registrar retirada e devolucao de materiais | Permitido |
 | Gerenciar cadastros, usuarios ou permissoes | Nao atribuido a este perfil |
 
+## Situacao atual da API
+
+As rotas de aprovacao e rejeicao recebem `usuarioId` e `tipoAprovador`; aceitam `RESPONSAVEL` ou `ADMINISTRADOR` e verificam se o ID existe no cadastro correspondente. A decisao fica associada ao Responsavel ou Administrador na reserva. Sem autenticacao, o cliente ainda pode declarar o ID de outra pessoa. O modelo tambem nao classifica recursos como restritos, entao permanece pendente exigir aprovacao apenas para esses recursos. Validacao de docentes, retirada/devolucao de materiais e historico auditavel tambem permanecem pendentes.
+
 ## Qualidade relevante - ISO/IEC 25010
 
 - **Seguranca:** somente o perfil autorizado pode aprovar recursos restritos.

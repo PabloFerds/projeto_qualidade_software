@@ -67,6 +67,28 @@ Requisitos derivados da especificacao academica e das responsabilidades confirma
 | RN07 - Nao exclusao e auditoria | RF14, RF15 |
 | RN08 - Movimentacao de materiais | RF13 |
 
+## Situacao da implementacao atual
+
+Esta matriz registra o que o backend existente realmente garante. Ela nao substitui os requisitos-alvo nem significa que os itens parciais ou pendentes foram dispensados.
+
+| Requisitos | Situacao no backend atual | Limite conhecido |
+|---|---|---|
+| RF01-RF02 | Pendente | Nao ha autenticacao nem autorizacao por perfil; IDs enviados pelo cliente nao comprovam identidade. |
+| RF03-RF05 | Pendente | Nao ha API para cadastros, pesquisa geral ou gestao de recursos. |
+| RF06 | Parcial | Criacao exige `tipoSolicitante` igual ao tipo persistido (`PROFESSOR`/`COORDENADOR`); alteracao/cancelamento verificam o solicitante associado. Ainda nao ha autenticacao, entao IDs podem ser falsificados e consultas nao verificam propriedade. |
+| RF07 | Implementado | O intervalo rejeita inicio/fim ausentes e exige termino posterior ao inicio. |
+| RF08 | Parcial | A sobreposicao e verificada apenas para a sala. Professores e materiais ainda nao integram o modelo. |
+| RF09 | Parcial | A sala e bloqueada pessimisticamente durante a validacao e gravacao; falta teste de integracao que comprove o comportamento concorrente no banco alvo. |
+| RF10 | Parcial | Decisao aceita `RESPONSAVEL` ou `ADMINISTRADOR` com ID existente no cadastro correspondente e registra o decisor. Nao ha classificacao de recurso restrito nem autenticacao do chamador. |
+| RF11 | Parcial | A reserva rejeita sala cujo estado nao seja `DISPONIVEL`; nao ha agenda de bloqueios/manutencoes nem endpoint administrativo. |
+| RF12-RF14 | Pendente | Validacao de alocacao docente, movimentacao de material e auditoria nao estao implementadas. |
+| RF15 | Parcial | Os estados existem no enum, mas a API nao oferece o ciclo completo ate `EM_USO`, `CONCLUIDA` e `NAO_COMPARECEU`. |
+| RF16-RF17 | Pendente | Relatorios e interface nao estao implementados nesta API. |
+| RF18 | Implementado parcialmente | A API de reservas tem contrato OpenAPI e guia; os demais fluxos publicos ainda nao estao documentados. |
+| RF19 | Pendente | Notificacao simulada ou integracao externa ainda nao foi definida/implementada. |
+
+Detalhes de rotas e respostas: [documentacao da API de reservas](../api-reservas.md). A API nao deve ser considerada pronta para uso externo enquanto RF01-RF02 nao forem implementados.
+
 ## Referencias
 
 - [Personas](personas/)

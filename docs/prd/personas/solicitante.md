@@ -38,6 +38,10 @@ Professor ou coordenador universitario que consulta disponibilidade e cria, alte
 | Gerenciar cadastros, usuarios ou permissoes | Nao atribuido a este perfil |
 | Aprovar solicitacoes especiais | Nao permitido |
 
+## Situacao atual da API
+
+Na criacao, a API recebe `tipoSolicitante` (`PROFESSOR` ou `COORDENADOR`) e exige correspondencia com o tipo persistido. Alteracao e cancelamento comparam o ID informado ao solicitante associado a reserva. Ainda nao ha login/token que confirme a identidade; IDs podem ser falsificados, e consultas nao sao restringidas ao dono autenticado. Portanto, as permissoes desta persona ainda nao estao prontas para uso externo. Conflitos de horario cobrem apenas salas; reservas de professores e materiais ainda nao estao no modelo.
+
 ## Qualidade relevante - ISO/IEC 25010
 
 - **Capacidade de interacao:** busca compreensivel, disponibilidade visivel e mensagens de erro acionaveis.

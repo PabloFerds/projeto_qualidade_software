@@ -27,6 +27,10 @@ public class Reserva {
     @JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
 
+    @ManyToOne
+    @JoinColumn(name = "administrador_id")
+    private Administrador administrador;
+
     @NotNull
     @Column(nullable = false)
     private LocalDateTime inicio;
@@ -92,15 +96,23 @@ public class Reserva {
             );
         }
 
-        if (status != StatusReserva.SOLICITADA) {
-            throw new IllegalStateException(
-                    "Somente reservas solicitadas podem ser aprovadas."
+        validarSolicitada();
+        this.responsavel = responsavel;
+        this.administrador = null;
+        registrarAprovacao();
+    }
+
+    public void aprovar(Administrador administrador) {
+        if (administrador == null) {
+            throw new IllegalArgumentException(
+                    "É necessário informar o administrador pela aprovação."
             );
         }
 
-        this.responsavel = responsavel;
-        this.status = StatusReserva.APROVADA;
-        this.aprovadoEm = LocalDateTime.now();
+        validarSolicitada();
+        this.responsavel = null;
+        this.administrador = administrador;
+        registrarAprovacao();
     }
 
     public void rejeitar(Responsavel responsavel) {
@@ -110,14 +122,36 @@ public class Reserva {
             );
         }
 
-        if (status != StatusReserva.SOLICITADA) {
-            throw new IllegalStateException(
-                    "Somente reservas solicitadas podem ser rejeitadas."
+        validarSolicitada();
+        this.responsavel = responsavel;
+        this.administrador = null;
+        this.status = StatusReserva.REJEITADA;
+    }
+
+    public void rejeitar(Administrador administrador) {
+        if (administrador == null) {
+            throw new IllegalArgumentException(
+                    "É necessário informar o administrador pela decisão."
             );
         }
 
-        this.responsavel = responsavel;
+        validarSolicitada();
+        this.responsavel = null;
+        this.administrador = administrador;
         this.status = StatusReserva.REJEITADA;
+    }
+
+    private void validarSolicitada() {
+        if (status != StatusReserva.SOLICITADA) {
+            throw new IllegalStateException(
+                    "Somente reservas solicitadas podem receber uma decisão."
+            );
+        }
+    }
+
+    private void registrarAprovacao() {
+        this.status = StatusReserva.APROVADA;
+        this.aprovadoEm = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -150,6 +184,14 @@ public class Reserva {
 
     public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
     public LocalDateTime getInicio() {
